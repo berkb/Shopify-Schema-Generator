@@ -41,10 +41,10 @@ export function SchemaBuilder() {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-140px)]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6 h-auto lg:h-[calc(100vh-140px)]">
       {/* Left Panel - Navigation */}
       <div className="lg:col-span-1">
-        <div className="card h-full">
+        <div className="card h-auto lg:h-full">
           <h2 className="text-lg font-semibold mb-4">Schema Builder</h2>
           
           <nav className="space-y-2">
@@ -101,10 +101,10 @@ export function SchemaBuilder() {
 
       {/* Right Panel - Content */}
       <div className="lg:col-span-2">
-        <div className="card h-full overflow-hidden">
+        <div className="card h-auto lg:h-full lg:overflow-hidden">
           {activePanel === 'settings' && <SchemaSettings />}
           {activePanel === 'fields' && (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 h-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 md:gap-4 h-auto xl:h-full">
               <FieldList />
               <FieldEditor />
             </div>

@@ -1,12 +1,17 @@
 'use client';
 
-import { Moon, Sun, Download, Upload, Settings, Github } from 'lucide-react';
+import { Moon, Sun, Download, Upload, Settings, Github, Menu, X } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { useSchemaStore } from '@/store/schemaStore';
 import { exportSchema, importSchema } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
-export function Header() {
+interface HeaderProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+}
+
+export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const { schema, loadSchema, exportOptions } = useSchemaStore();
 
@@ -53,14 +58,22 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-dark-800 border-b border-gray-200 dark:border-dark-700 px-6 py-4">
+    <header className="bg-white dark:bg-dark-800 border-b border-gray-200 dark:border-dark-700 px-3 md:px-6 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-dark-700 dark:hover:bg-dark-600 transition-colors"
+          >
+            {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+          
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-shopify-500 to-shopify-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <div>
+            <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 Shopify Schema Generator
               </h1>
@@ -68,10 +81,15 @@ export function Header() {
                 Advanced theme schema builder
               </p>
             </div>
+            <div className="sm:hidden">
+              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                Schema Generator
+              </h1>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 md:space-x-3">
           <button
             onClick={handleImport}
             className="btn-secondary flex items-center space-x-2"

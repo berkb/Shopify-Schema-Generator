@@ -73,7 +73,7 @@ export function Footer() {
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <img
-                  src="https://berkb.netlify.app/me.webp"
+                  src="/me.png"
                   alt="Berk Belcioglu"
                   className="w-8 h-8 rounded-full"
                 />

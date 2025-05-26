@@ -36,7 +36,14 @@ export function PresetEditor() {
   };
 
   const handleUpdatePreset = (index: number, updates: Partial<SchemaPreset>) => {
-    updatePreset(index, updates);
+    // Ensure all required fields are present
+    const updatedPreset: SchemaPreset = {
+      name: updates.name || '',
+      category: updates.category || '',
+      settings: updates.settings || {},
+      blocks: updates.blocks || []
+    };
+    updatePreset(index, updatedPreset);
   };
 
   const duplicatePreset = (preset: SchemaPreset) => {

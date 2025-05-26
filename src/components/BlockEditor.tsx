@@ -508,7 +508,7 @@ export function BlockEditor() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Block Editor</h3>
+      <h3 className="text-lg font-semibold">Block Editor</h3>
         <button
           onClick={() => setShowAddForm(true)}
           className="btn-primary flex items-center gap-2"
@@ -716,7 +716,7 @@ export function BlockEditor() {
             </div>
           ))
         ) : (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+      <div className="text-center py-12 text-gray-500 dark:text-gray-400">
             <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
               <Settings className="w-8 h-8" />
             </div>

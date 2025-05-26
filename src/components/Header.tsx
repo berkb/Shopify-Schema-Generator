@@ -99,7 +99,7 @@ export function Header() {
           </button>
 
           <a
-            href="https://github.com/your-repo/shopify-schema-generator"
+            href="https://github.com/berkb/Shopify-Schema-Generator"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-dark-700 dark:hover:bg-dark-600 transition-colors"

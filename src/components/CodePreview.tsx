@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 export function CodePreview() {
   const [viewMode, setViewMode] = useState<'formatted' | 'minified'>('formatted');
-  const { schema, exportOptions, setExportOptions } = useSchemaStore();
+  const { schema, exportOptions, setExportOptions, setHasUnsavedChanges } = useSchemaStore();
 
   const generatedCode = exportSchema(schema, {
     ...exportOptions,
@@ -36,6 +36,7 @@ export function CodePreview() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    setHasUnsavedChanges(false);
     toast.success('File downloaded!');
   };
 

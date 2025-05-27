@@ -8,6 +8,7 @@ interface SchemaStore {
   validationErrors: ValidationError[];
   isDarkMode: boolean;
   exportOptions: ExportOptions;
+  hasUnsavedChanges: boolean;
   
   // Actions
   updateSchema: (updates: Partial<Schema>) => void;
@@ -28,6 +29,7 @@ interface SchemaStore {
   setValidationErrors: (errors: ValidationError[]) => void;
   toggleDarkMode: () => void;
   setExportOptions: (options: Partial<ExportOptions>) => void;
+  setHasUnsavedChanges: (hasChanges: boolean) => void;
   
   resetSchema: () => void;
   loadSchema: (schema: Schema) => void;
@@ -60,17 +62,25 @@ export const useSchemaStore = create<SchemaStore>((set, get) => ({
   validationErrors: [],
   isDarkMode: false,
   exportOptions: defaultExportOptions,
+  hasUnsavedChanges: false,
   
   // Actions
-  updateSchema: (updates) => set((state) => ({
-    schema: { ...state.schema, ...updates }
-  })),
+  updateSchema: (updates) => set((state) => {
+    const updatedSchema = { ...state.schema, ...updates };
+    const isDefault = JSON.stringify(updatedSchema) === JSON.stringify(defaultSchema);
+    
+    return {
+      schema: updatedSchema,
+      hasUnsavedChanges: !isDefault
+    };
+  }),
   
   addField: (field) => set((state) => ({
     schema: {
       ...state.schema,
       settings: [...state.schema.settings, field]
-    }
+    },
+    hasUnsavedChanges: true
   })),
   
   updateField: (fieldId, updates) => set((state) => {
@@ -88,7 +98,8 @@ export const useSchemaStore = create<SchemaStore>((set, get) => ({
         ...state.schema,
         settings: updatedSettings
       },
-      selectedField: newSelectedField
+      selectedField: newSelectedField,
+      hasUnsavedChanges: true
     };
   }),
   
@@ -97,7 +108,8 @@ export const useSchemaStore = create<SchemaStore>((set, get) => ({
       ...state.schema,
       settings: state.schema.settings.filter(field => field.id !== fieldId)
     },
-    selectedField: state.selectedField === fieldId ? null : state.selectedField
+    selectedField: state.selectedField === fieldId ? null : state.selectedField,
+    hasUnsavedChanges: true
   })),
   
   reorderFields: (oldIndex, newIndex) => set((state) => {
@@ -167,16 +179,20 @@ export const useSchemaStore = create<SchemaStore>((set, get) => ({
     exportOptions: { ...state.exportOptions, ...options }
   })),
   
+  setHasUnsavedChanges: (hasChanges) => set({ hasUnsavedChanges: hasChanges }),
+  
   resetSchema: () => set({
     schema: defaultSchema,
     selectedField: null,
-    validationErrors: []
+    validationErrors: [],
+    hasUnsavedChanges: false
   }),
   
   loadSchema: (schema) => set({
     schema,
     selectedField: null,
-    validationErrors: []
+    validationErrors: [],
+    hasUnsavedChanges: false
   }),
   
   reorderBlockFields: (blockType, oldIndex, newIndex) => set((state) => {

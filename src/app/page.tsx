@@ -1,16 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { SchemaBuilder } from '@/components/SchemaBuilder';
 import { CodePreview } from '@/components/CodePreview';
 import { TemplateLibrary } from '@/components/TemplateLibrary';
 import { Footer } from '@/components/Footer';
+import { useSchemaStore } from '@/store/schemaStore';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'builder' | 'preview' | 'templates'>('builder');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { hasUnsavedChanges } = useSchemaStore();
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = 'Kaydedilmemiş değişiklikleriniz var. Sayfayı kapatmak istediğinizden emin misiniz?';
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasUnsavedChanges]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-900 flex flex-col">
